@@ -1,0 +1,28 @@
+version: 0.2
+
+env:
+  parameter-store:
+    DOCKER_REGISTRY_USERNAME: "/myapp/docker-credentials/username"
+    DOCKER_REGISTRY_PASSWORD: "/myapp/docker-credentials/password"
+    DOCKER_REGISTRY_URL: "/myapp/docker-credentials/url"
+
+    
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+  
+  pre_build:
+    commands:
+      - echo "Logging into Docker Registry"
+      - echo "$DOCKER_REGISTRY_PASSWORD" | docker login "$DOCKER_REGISTRY_URL" -u "$DOCKER_REGISTRY_USERNAME" --password-stdin
+      - pip install -r requirements.txt
+      
+  build:
+    commands:
+      - echo "Building Docker Image"
+      - docker build -t "$DOCKER_REGISTRY_USERNAME/newsfetch:latest" .
+      - docker push "$DOCKER_REGISTRY_USERNAME/newsfetch:latest"
+  post_build:
+    commands:
+      - echo "Build is sucessfull"
