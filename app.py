@@ -82,7 +82,7 @@ def index():
             <h1>{category} News</h1>
             
             <div class="categories">
-                <a href="/?category=general">General</a>
+                <a href="/?category=general">Generally</a>
                 <a href="/?category=business">Business</a>
                 <a href="/?category=technology">Technology</a>
                 <a href="/?category=sports">Sports</a>
